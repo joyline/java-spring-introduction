@@ -1,7 +1,6 @@
 package com.example.introduction;
 
 import jakarta.validation.Valid;
-import jakarta.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,8 +19,9 @@ public class UserController {
     }
 
     @GetMapping("/user")
-    public List<UserData> getAllUser() {
-        return userDataRepository.findAll();
+    public ResponseEntity<List<UserData>> getAllUser() {
+        List<UserData> userDataList = userDataRepository.findAll();
+        return ResponseEntity.ok(userDataList);
     }
 
     @GetMapping("/user/{userId}")
@@ -31,9 +31,9 @@ public class UserController {
     }
 
     @GetMapping("/user-by-email")
-    public UserData getUserByEmail(@RequestParam String email) {
-        Optional<UserData> userData = userDataRepository.findByEmail(email);
-        return userData.orElse(null);
+    public ResponseEntity<UserData> getUserByEmail(@RequestParam String email) {
+        UserData userData = userDataRepository.findByEmail(email).orElse(null);
+        return ResponseEntity.ok(userData);
     }
 
     @PostMapping("/user")
